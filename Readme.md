@@ -21,7 +21,7 @@ This can take a while
 ### Installing
 Clone the repositery wherever you like
 ```
-git clone https:/github.com/anish-kmr/facelock.git
+git clone https://github.com/anish-kmr/facelock.git
 ```
 cd into cloned repo
 
