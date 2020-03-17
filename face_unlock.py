@@ -5,11 +5,11 @@ Created on Sat Mar 14 13:01:01 2020
 
 @author: chandan
 """
+import numpy as np
 import cv2
 import face_recognition
 from face_records import get_recorded_data
 from sys import exit
-import numpy as np
 save_path = "/etc/facelock/face_records/"
 
 known_face_encodings,known_face_names =  get_recorded_data(save_path)
@@ -47,7 +47,7 @@ while True:
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
                 name = known_face_names[best_match_index]
-                print(f"{name} Unlocked.")
+                print(f"facelock: Authenticated by {name}")
                 passed=True
                 break
 

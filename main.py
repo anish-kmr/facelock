@@ -7,8 +7,7 @@ from numpy import ndarray,where,delete
 base_path = "/etc/facelock/"
 save_path = base_path+"face_records/"
 authentication_shfile = base_path+"face_authenticate.sh"
-log_dir = base_path+"logs/"
-pam_config = f"auth sufficient pam_exec.so log={log_dir}facelock_logs.log debug {authentication_shfile}\n"
+pam_config = f"auth sufficient pam_exec.so stdout debug {authentication_shfile}\n"
 comment = "#Face Authentication Script\n"
 def adder(args):
     add_face(save_path,args.label,args.file)
