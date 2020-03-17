@@ -2,36 +2,46 @@
 
 Now use your face for login,sudo commands and other authentications on linux
 
-### Prerequisites
+### Requirements
 
 1. Python3
 2. Python Modules:
    - Numpy
    - OpenCV
-   - Dlib
+   - **Dlib**
    - face_recognition 
      
-You can either install these dependencies seperately yourselves or by running this:
-```
-$ cd facelock/
-$ chmod +x requirements.sh && ./requirements.sh
-```
-This can take a while
+You can either install these dependencies seperately yourselves or by following these steps.
 
 ### Installing
+### Step 1
+
 Clone the repositery wherever you like
 ```
 git clone https://github.com/anish-kmr/facelock.git
 ```
+Rename from 'facelock-master' to 'facelock' and
 cd into cloned repo
 
 ```
-cd facelock
+$ cd facelock
 ```
-and install the facelock
+### Step 2
+**If you have all requirements listed above installed ,then you can leave this step.**
 ```
-chmod +x install.sh && ./install.sh
+$ chmod +x requirements.sh
+$ sudo ./requirements.sh
 ```
+This can take a while
+ 
+ ### Step 3
+Install  facelock
+```
+$ chmod +x install.sh 
+$ sudo ./install.sh
+```
+
+You now have facelock installed
 
 ## Running
 Check the status of facelock
