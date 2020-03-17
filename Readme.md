@@ -19,7 +19,7 @@ $ chmod +x requirements.sh && ./requirements.sh
 This can take a while
 
 ### Installing
-Clone the repositery whwerever you like
+Clone the repositery wherever you like
 ```
 git clone https:/github.com/anish-kmr/facelock.git
 ```
@@ -40,7 +40,7 @@ $ facelock status
 ```
 First time, it should say disabled.
 #### Add Faces
-You can add faces which can unlock facelock by either an image containing only your photo or by capturing by videocam.
+You can add faces which can unlock facelock by either an image containing only your photo or by capturing by webcam.
 - Using Image file
 ```
 $ facelock add your_label --file="path/to/image.jpg"
@@ -49,7 +49,7 @@ $ facelock add your_label --file="path/to/image.jpg"
 ```
 $ facelock add your_label 
 ```
-Change your_label to your name or whatever you like.
+Change 'your_label' to your name or whatever you like.
 
 #### Enable Facelock
 ```
