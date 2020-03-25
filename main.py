@@ -1,55 +1,71 @@
-#!/usr/bin/env python3
-from face_add import add_face
-from face_records import get_recorded_data,save_recorded_data
+from model import FaceDetector,FaceRecognizer
+from util import save,load
 import argparse
-from numpy import ndarray,where,delete
+import os
 
 base_path = "/etc/facelock/"
 save_path = base_path+"face_records/"
+save_file = save_path+"database.pkl"
 authentication_shfile = base_path+"face_authenticate.sh"
 pam_config = f"auth sufficient pam_exec.so stdout debug {authentication_shfile}\n"
 comment = "#Face Authentication Script\n"
-def adder(args):
-    add_face(save_path,args.label,args.file)
+if(os.path.exists(save_file)):
+    recognizer = load(save_file,train=False)
+else:
+    recognizer = FaceRecognizer()
     
-
+def adder(args):
+    added = recognizer.add_face(args.label)
+    if not added:
+        print(f"facelock : Specified label '{args.label}' already exists.")
+        print(f"Do You want to add more faces to label '{args.label}'.")
+        print("Hint: Adding more faces to a label will help recognize faces easily.")
+        while True:
+            choice = input("Enter [y/n]: ")
+            if(choice == "y" or choice == "Y" ):
+                recognizer.add_more_faces(args.label)
+                save(recognizer, save_file)
+                return
+            elif(choice == "n" or choice == "N"):
+                return
+            else:
+                print("facelock : Please enter 'y' or 'n' ")
+    else:
+        save(recognizer, save_file)
+            
 def list_labels(args):
-    _,labels = get_recorded_data(save_path)
-    if len(labels)>0:
+    face_list = recognizer.list_faces()
+    if len(face_list)>0:
         print("facelock: Recorded Face Labels are : ")
-        for i in range(len(labels)):
-            print(f"{i+1}. {labels[i]}")
+        for i,key in enumerate(face_list):
+            print(f"{i+1}.{key}({face_list[key]} faces)")
     else:
         print("facelock: No Faces in Record :")
         print("facelock: Try 'facelock add <your_label>' to add a new face to records")
 
 def remover(args):
     label=args.label
-    known_face_encodings,known_face_names =  get_recorded_data(save_path)
-    if  len(known_face_encodings)==0:
+    
+    if  len(recognizer.labels_map)==0:
         print("facelock: No saved records")
+    elif (len(recognizer.labels_map)==1 and status(printing=False)):
+        print("facelock: Only 1 Face in record. Disable Facelock authentication first, then remove labels ")
+        return
     else:
-        
-        label_index,  = where(known_face_names==label)
-        if(len(label_index)==0 ):
+        removed = recognizer.remove_face(label)
+        if(not removed):
             print(f"facelock: {label} is not in the saved records.")
             return
         else:
-            if(len(known_face_names)==1 and status(printing=False)):
-                print("facelock: Only 1 Face in record. Disable Facelock authentication first, then remove labels ")
-                return
-            known_face_encodings=delete(known_face_encodings,label_index,0)
-            known_face_names=delete(known_face_names,label_index,0)
-            save_recorded_data(save_path, known_face_encodings,known_face_names)
-            print(f"facelock: {label} removed from records.")
+            save(recognizer, save_file)
+            print(f"facelock: {label}({removed} faces) removed from records.")
             
 
 def enable(args):
         
-    known_face_encodings,known_face_names =  get_recorded_data(save_path)
-    if  len(known_face_encodings)==0:
+    if  recognizer.no_known_faces==0:
         print("facelock: No saved records")
-        print("facelock: Add at least one face to record by 'facelock add <your_label>' or facelock add <your_label> --file='/path/to/faceimage.jpg'")
+        print("facelock: Add at least one face to record by 'facelock add <your_label>'")
         return False
         
 
@@ -113,13 +129,16 @@ def status(printing=True):
             print("facelock: Facelock Authentication is Disabled")
         return False
 
+def test(args):
+    recognizer.train_recognizer()
+    recognizer.test_recognizer()
+    
 parser = argparse.ArgumentParser(prog="Facelock",usage="A command line tool for faclock in linux. ")
 
 subparsers = parser.add_subparsers(description="Use these subcommands to change configurations of facelock")
 
 add = subparsers.add_parser("add",help="Add a new face  for authentications.\n (For more: 'facelock add -h') ")
 add.add_argument("label", help="Label for the face")
-add.add_argument("--file",help="Path of image containing face")
 add.set_defaults(func=adder)
 
 
@@ -139,6 +158,9 @@ disable_parser.set_defaults(func=disable)
 
 status_parser = subparsers.add_parser("status",help="Check if Facelock Authentication is Enabled or Disabled")
 status_parser.set_defaults(func=status)
+
+test_parser = subparsers.add_parser("test", help="Test the Facelock Recognizer")
+test_parser.set_defaults(func=test)
 
 args = parser.parse_args()
 args.func(args)

@@ -1,16 +1,10 @@
 #!/bin/bash
 
-if [[ "$(python3 -V)" =~ "Python 3" ]]; then
+if [[ "$(python3 -V)" =~ "Python 3.6" ]]; then
    	
-	sudo apt-get install build-essential cmake pkg-config
-	sudo apt-get install libx11-dev libatlas-base-dev
-	sudo apt-get install libgtk-3-dev
-	sudo apt-get install libboost-all-dev
-	sudo apt-get install python3-dev
 	sudo pip3 install numpy
     sudo pip3 install opencv-python
-	sudo pip3 install dlib
-   	sudo pip3 install face_recognition
+    sudo pip3 install opencv-contrib-python
 else 
-    echo "Python3 not installed"
+    echo "Python3.6 or above not installed"
 fi
