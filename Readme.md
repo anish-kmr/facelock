@@ -1,17 +1,16 @@
 # Facelock
 
-Now use your face for login,sudo commands and other authentications on linux
+Now use your face for login,sudo commands and other authentications on linux. 
+
 
 ### Requirements
 
-1. Python3
+1. Python3.6 or above
 2. Python Modules:
-   - Numpy
-   - OpenCV
-   - **Dlib**
-   - face_recognition 
+   - numpy
+   - opencv-python
+   - opencv-contrib-python
      
-You can either install these dependencies seperately yourselves or by following these steps.
 
 ### Installing
 ### Step 1
@@ -30,7 +29,7 @@ $ cd facelock
 **If you have all requirements listed above installed ,then you can leave this step.**
 ```
 $ chmod +x requirements.sh
-$ sudo ./requirements.sh
+$ ./requirements.sh
 ```
 This can take a while
  
@@ -38,7 +37,7 @@ This can take a while
 Install  facelock
 ```
 $ chmod +x install.sh 
-$ sudo ./install.sh
+$ ./install.sh
 ```
 
 You now have facelock installed
@@ -50,17 +49,20 @@ $ facelock status
 ```
 First time, it should say disabled.
 #### Add Faces
-You can add faces which can unlock facelock by either an image containing only your photo or by capturing by webcam.
-- Using Image file
-```
-$ facelock add your_label --file="path/to/image.jpg"
-```
-- Using Webcam 
+You can add faces facelock by webcam.
 ```
 $ facelock add your_label 
 ```
-Change 'your_label' to your name or whatever you like.
+Change 'your_label' to your name or whatever you like.<br>
+This will open your webcam. Show your face to webcam for a few seconds at different distances.
 
+#### Test Facelock
+To check whether you are recognized or not ,type this:
+```
+$ facelock test
+```
+Your label should appear on top of your face.
+If not, try adding more of your faces to database by 'facelock add <your_existing_label>' 
 #### Enable Facelock
 ```
 $ facelock enable
