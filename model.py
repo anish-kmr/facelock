@@ -106,12 +106,13 @@ class FaceRecognizer:
             return False
         deleted,i=0,0
         n=len(self.labels_id)
-        print("len : ",n,"id :",id)
+        print("facelock : Removing ",n," face data.")
         while i < n:
             if( self.labels_id[i]==id ):
                 del self.labels_id[i]
                 del self.faces_dataset[i]
                 deleted+=1
+                i+=1
                 n-=1
         del self.labels_map[id]
         self.no_known_faces-=1
