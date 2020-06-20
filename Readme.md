@@ -55,6 +55,7 @@ $ facelock add your_label
 ```
 Change 'your_label' to your name or whatever you like.<br>
 This will open your webcam. Show your face to webcam for a few seconds at different distances.
+Press 'q' to close webcam.
 
 #### Test Facelock
 To check whether you are recognized or not ,type this:
@@ -76,6 +77,7 @@ To see who all can pass facelock
 $ facelock list
 ```
 The labels listed were set by you when you added them.
+The number in braces represents the number of face data recorded for particular label.
 
 #### Remove Faces
 To remove faces from facelock records, 
